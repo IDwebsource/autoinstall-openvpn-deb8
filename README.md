@@ -19,7 +19,7 @@ Install OpenVPN dan Squid3 Debian 8
 1. wget https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb8.sh
    If problem "ERROR: The certificate of 'raw.githubusercontent.com' is not trusted"
   
-   The solution was simple, from my debian system simply install:
+   The solution simple install:
    apt-get install ca-certificates
   
 2. chmod +x ovpndeb8.sh
