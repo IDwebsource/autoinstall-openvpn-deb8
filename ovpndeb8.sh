@@ -2,6 +2,7 @@
 #
 # Original script by fornesia, rzengineer and fawzya
 # Mod by Bustami Arifin
+# Upgrade by Umar Ajurna
 # ==================================================
 
 # initialisasi var
@@ -9,6 +10,8 @@ export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
+
+#cek kvm atau openvz
 GATEWAY=$(ip route | grep default | cut -d ' ' -f 3 | head -n 1);
 		if [[ $GATEWAY == "venet0" ]]; then 
 			lan_gateway="venet0"
@@ -48,11 +51,9 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list "http://repo.ajurna.net/sources.list.debian8"
+wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/sources.list.debian8"
 wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-#sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list'
-#wget -qO - http://www.webmin.com/jcameron-key.asc | apt-key add -
 
 # update
 apt-get update
@@ -81,23 +82,23 @@ echo 'echo -e ""' >> .bashrc
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf "http://repo.ajurna.net/nginx.conf"
+wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/nginx.conf"
 mkdir -p /home/vps/public_html
 echo "<pre>Setup by Umar Ajurna</pre>" > /home/vps/public_html/index.html
-wget -O /etc/nginx/conf.d/vps.conf "http://repo.ajurna.net/vps.conf"
+wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/vps.conf"
 /etc/init.d/nginx restart
 
 # install openvpn
-wget -O /etc/openvpn/openvpn.tar "http://repo.ajurna.net/openvpn-debian.tar"
+wget -O /etc/openvpn/openvpn.tar "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/openvpn-debian.tar"
 cd /etc/openvpn/
 tar xf openvpn.tar
-wget -O /etc/openvpn/server.conf "http://repo.ajurna.net/server.conf"
+wget -O /etc/openvpn/server.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/server.conf"
 /etc/init.d/openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 iptables -t nat -I POSTROUTING -s 192.168.100.0/24 -o $lan_gateway -j MASQUERADE
 iptables-save > /etc/iptables_yg_baru_dibikin.conf
-wget -O /etc/network/if-up.d/iptables "http://repo.ajurna.net/iptables"
+wget -O /etc/network/if-up.d/iptables "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/iptables"
 chmod +x /etc/network/if-up.d/iptables
 mkdir -p /etc/openvpn/logs
 touch /etc/openvpn/logs/{openvpn,status}.log
@@ -107,7 +108,7 @@ systemctl restart openvpn@server.service
 
 # konfigurasi openvpn
 cd /etc/openvpn/
-wget -O /etc/openvpn/client.ovpn "http://repo.ajurna.net/client.conf"
+wget -O /etc/openvpn/client.ovpn "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/client.conf"
 sed -i $MYIP2 /etc/openvpn/client.ovpn;
 cp client.ovpn /home/vps/public_html/
 
@@ -132,7 +133,7 @@ echo "/usr/sbin/nologin" >> /etc/shells
 # install squid3
 cd
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf "http://repo.ajurna.net/squid3.conf"
+wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/squid3.conf"
 sed -i $MYIP2 /etc/squid3/squid.conf;
 /etc/init.d/squid3 restart
 
@@ -143,16 +144,16 @@ gem install lolcat
 
 # download script
 cd /usr/bin
-wget -O menu "http://repo.ajurna.net/menu.sh"
-wget -O usernew "http://repo.ajurna.net/usernew.sh"
-wget -O trial "http://repo.ajurna.net/trial.sh"
-wget -O hapus "http://repo.ajurna.net/hapus.sh"
-wget -O cek "http://repo.ajurna.net/user-vpn.sh"
-wget -O member "http://repo.ajurna.net/user-list.sh"
-wget -O resvis "http://repo.ajurna.net/resvis.sh"
-wget -O speedtest "http://repo.ajurna.net/speedtest.py"
-wget -O info "http://repo.ajurna.net/info.sh"
-wget -O about "http://repo.ajurna.net/about.sh"
+wget -O menu "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/menu.sh"
+wget -O usernew "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/usernew.sh"
+wget -O trial "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/trial.sh"
+wget -O hapus "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/hapus.sh"
+wget -O cek "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/user-vpn.sh"
+wget -O member "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/user-list.sh"
+wget -O resvis "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/resvis.sh"
+wget -O speedtest "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/speedtest.py"
+wget -O info "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/info.sh"
+wget -O about "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/about.sh"
 
 echo "0 0 * * * root /sbin/reboot" > /etc/cron.d/reboot
 
@@ -178,12 +179,6 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid3 restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
-
-# install neofetch
-#echo "deb http://dl.bintray.com/dawidd6/neofetch jessie main" | tee -a /etc/apt/sources.list
-#curl "https://bintray.com/user/downloadSubjectPublicKey?username=bintray"| apt-key add -
-#apt-get update
-#apt-get install neofetch
 
 # info
 clear
