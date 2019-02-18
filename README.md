@@ -16,7 +16,7 @@ Upgrade and mod by Umar Ajurna
 
 Install OpenVPN dan Squid3 Debian 8
 --------------------------
-wget http://repo.ajurna.net/ovpndeb8.sh
+wget https://github.com/IDwebsource/auto-ovpndeb8/blob/master/ovpndeb8.sh
 chmod +x ovpndeb8.sh
 ./ovpndeb8.sh
 
