@@ -123,7 +123,7 @@ get_sys_stats() {
 	kernel="$(uname -r)"
     sys_type="${NAME/ */} $VERSION_ID (${CODENAME^}) $(uname -m)"
 
-    # Get core count
+    # Get cores count
     sys_cores=$(grep -c "^processor" /proc/cpuinfo)
     sys_modelname=$(sed -n 's/^model name[ \t]*: *//p' /proc/cpuinfo | uniq)
     cpu_mhz=$(sed -n 's/^cpu MHz[ \t]*: *//p' /proc/cpuinfo | uniq)
@@ -228,7 +228,7 @@ get_strings() {
     sys_kernel="$kernel"
     
     [[ "$sys_cores" -ne 1 ]] && sys_cores_txt="${sys_cores}x "
-    cpu_info="Core: $sys_cores_txt $cpu_mhz MHz"
+    cpu_info="Cores: $sys_cores_txt$cpu_mhz MHz"
     ram_info="$used_str$(hrBytes "$ram_used") of $(hrBytes "$ram_total")"
     disk_info="$used_str$(hrBytes "$disk_used") of $(hrBytes "$disk_total")"
     lan_info="Gateway: $net_gateway"
