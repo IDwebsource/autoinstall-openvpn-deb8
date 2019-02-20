@@ -227,7 +227,7 @@ get_strings() {
     sys_proc="$count_process Running Proccess"
     sys_kernel="$kernel"
     
-    [[ "$sys_cores" -ne 1 ]] && sys_cores_txt="${sys_cores}x "
+    [[ "$sys_cores" -ne 1 ]] && sys_cores_txt="${sys_cores}x"
     cpu_info="Core: $sys_cores_txt $cpu_mhz MHz"
     ram_info="$used_str$(hrBytes "$ram_used") of $(hrBytes "$ram_total")"
     disk_info="$used_str$(hrBytes "$disk_used") of $(hrBytes "$disk_total")"
