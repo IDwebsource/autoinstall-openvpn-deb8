@@ -126,7 +126,9 @@ get_sys_stats() {
     # Get core count
     sys_cores=$(grep -c "^processor" /proc/cpuinfo)
     sys_modelname=$(sed -n 's/^model name[ \t]*: *//p' /proc/cpuinfo | uniq)
-	cout_process=$(ps aux | grep -vE "^USER|grep" | wc -l)
+    cpu_cores=$(sed -n 's/^cpu cores[ \t]*: *//p' /proc/cpuinfo | uniq)
+    cpu_mhz=$(sed -n 's/^cpu MHz[ \t]*: *//p' /proc/cpuinfo | uniq)
+    count_process=$(ps aux | grep -vE "^USER|grep" | wc -l)
     
 	
 	# Update every 12 refreshes (Def: every 60s)
@@ -174,21 +176,6 @@ get_sys_stats() {
     cpu_taskact=$(sed -r "/(^ 0.)/d" <<< "$cpu_raw" | wc -l)
     cpu_perc=$(awk '{sum+=$1} END {printf "%.0f\n", sum/'"$sys_cores"'}' <<< "$cpu_raw")
 	
-	#CPU TEMPERATURE
-	#cpuTemp0=$(cat /sys/class/thermal/thermal_zone0/temp)
-	#cpuTemp1=$(($cpuTemp0/1000))
-	#cpuTemp2=$(($cpuTemp0/100))
-	#cpuTempM=$(($cpuTemp2 % $cpuTemp1))
-	
-        case "${cpuTemp1::-1}" in
-            -*|[0-9]|[1-3][0-9]) cpu_col="$COL_LIGHT_BLUE";;
-            4[0-9]) cpu_col="";;
-            5[0-9]) cpu_col="$COL_YELLOW";;
-            6[0-9]) cpu_col="$COL_LIGHT_RED";;
-            *) cpu_col="$COL_URG_RED";;
-            esac
-		cpu_Temp=$cpu_col$cpuTemp1.$cpuTempM\'C$COL_NC$COL_DARK_GRAY
-
 	# RAM USAGE
     read -r -a ram_raw <<< "$(awk '/MemTotal:/{total=$2} /MemFree:/{free=$2} /Buffers:/{buffers=$2} /^Cached:/{cached=$2} END {printf "%.0f %.0f %.0f", (total-free-buffers-cached)*100/total, (total-free-buffers-cached)*1024, total*1024}' /proc/meminfo)"
     ram_perc="${ram_raw[0]}"
@@ -238,10 +225,10 @@ get_strings() {
     sys_info2="Active: $cpu_taskact of $cpu_tasks tasks"
     used_str="Used: "
     leased_str="Leased: "
-	sys_proc="$cout_process Running Proccess"
-	sys_kernel="$kernel"
+    sys_proc="$count_process Running Proccess"
+    sys_kernel="$kernel"
 	
-    cpu_info="$cpu_Temp"
+    cpu_info="Core: $cpu_cores @ $cpu_mhz MHz"
     ram_info="$used_str$(hrBytes "$ram_used") of $(hrBytes "$ram_total")"
     disk_info="$used_str$(hrBytes "$disk_used") of $(hrBytes "$disk_total")"
     lan_info="Gateway: $net_gateway"
@@ -252,7 +239,6 @@ chronoFunc() {
 
     for (( ; ; )); do
         get_sys_stats
-        #get_ftl_stats
         get_strings
 
         # Get refresh number
