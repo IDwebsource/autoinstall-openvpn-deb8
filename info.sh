@@ -126,7 +126,6 @@ get_sys_stats() {
     # Get core count
     sys_cores=$(grep -c "^processor" /proc/cpuinfo)
     sys_modelname=$(sed -n 's/^model name[ \t]*: *//p' /proc/cpuinfo | uniq)
-    cpu_cores=$(sed -n 's/^cpu cores[ \t]*: *//p' /proc/cpuinfo | uniq)
     cpu_mhz=$(sed -n 's/^cpu MHz[ \t]*: *//p' /proc/cpuinfo | uniq)
     count_process=$(ps aux | grep -vE "^USER|grep" | wc -l)
     
@@ -227,8 +226,9 @@ get_strings() {
     leased_str="Leased: "
     sys_proc="$count_process Running Proccess"
     sys_kernel="$kernel"
-	
-    cpu_info="Core: $cpu_cores @ $cpu_mhz MHz"
+    
+    [[ "$sys_cores" -ne 1 ]] && sys_cores_txt="${sys_cores}x "
+    cpu_info="Core: $sys_cores_txt $cpu_mhz MHz"
     ram_info="$used_str$(hrBytes "$ram_used") of $(hrBytes "$ram_total")"
     disk_info="$used_str$(hrBytes "$disk_used") of $(hrBytes "$disk_total")"
     lan_info="Gateway: $net_gateway"
@@ -274,7 +274,7 @@ echo -e "$COL_DARK_GRAY=======================================================$C
         printFunc "  Hostname: " "$sys_name" "$sys_name2"
         printFunc "    Uptime: " "$sys_uptime" "$sys_proc"
         printFunc " Task Load: " "$sys_loadavg" "$sys_info2"
-        printFunc " CPU usage: " "$cpu_perc%" #"$cpu_info"
+        printFunc " CPU usage: " "$cpu_perc%" "$cpu_info"
         printFunc " RAM usage: " "$ram_perc%" "$ram_info"
         printFunc " HDD usage: " "$disk_perc" "$disk_info"
 		printFunc "   IP addr: " "$MYIP" "$lan_info"
