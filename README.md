@@ -28,5 +28,5 @@ Install OpenVPN and Squid3
 2. chmod +x ovpndeb8.sh
 3. ./ovpndeb8.sh
 4. Done
-   <br/>Status Server is UP, "info -e" for command 
+   <br/>Status Server is UP, "info" for command 
     <br/><a href="https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb8.png" rel="nofollow"><img src="https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb8.png" alt=""></a>
