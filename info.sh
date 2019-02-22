@@ -261,7 +261,7 @@ echo -e "[1;33m / _  || | | | | '__| '_ \ / _  | |  \| |  _|   | |	$COL_NC"
 echo -e "[1;34m| (_| || | |_| | |  | | | | (_| |_| |\  | |___  | |	$COL_NC"
 echo -e "[1;35m \__,_|/ |\__,_|_|  |_| |_|\__,_(_)_| \_|_____| |_|	$COL_NC"
 echo -e "[1;36m     |__/												$COL_NC"
-        if [[ "$count" -le 2 ]] && [[ "$*" != *"-e"* ]]; then
+        if [[ "$count" -le 2 ]] && [[ "$*" == *"-r"* ]]; then
             echo -e "$num_str ${COL_LIGHT_RED}Press Ctrl-C to exit${COL_NC}"
         else
 echo -e "${COL_LIGHT_GREEN}Info server - mod from Pi-hole Chronometer${COL_NC}"
@@ -287,7 +287,7 @@ echo -e "$COL_DARK_GRAY=======================================================$C
 
 
         # Handle exit/refresh options
-        if [[ "$*" == *"-e"* ]]; then
+        if [[ "$*" != *"-r"* ]]; then
             exit 0
         else
             if [[ "$*" == *"-r"* ]]; then
@@ -306,12 +306,11 @@ helpFunc() {
     if [[ "$1" == "?" ]]; then
         echo "Unknown option. Please view 'info --help' for more information"
     else
-        echo "Usage: info -e [options]
-Example: 'info -r 5'
+        echo "Usage: info -r [options]
+Example: 'info -r 10'
 Calculates stats and displays to an LCD
 Options:
   -r, --refresh       Set update frequency (in seconds)
-  -e, --exit          Output stats and exit witout refreshing
   -h, --help          Display this help text"
   fi
 
@@ -326,7 +325,6 @@ for var in "$@"; do
     case "$var" in
         "-h" | "--help"    ) helpFunc;;
         "-r" | "--refresh" ) chronoFunc "$@";;
-        "-e" | "--exit"    ) chronoFunc "$@";;
         *                  ) helpFunc "?";;
     esac
 done
