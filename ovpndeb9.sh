@@ -120,16 +120,6 @@ sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port 444' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
-# install dropbear
-apt-get -y install dropbear
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=3128/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 143"/g' /etc/default/dropbear
-echo "/bin/false" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
-/etc/init.d/ssh restart
-/etc/init.d/dropbear restart
-
 # install squid3
 cd
 apt-get -y install squid3
@@ -175,7 +165,6 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/openvpn restart
 /etc/init.d/cron restart
 /etc/init.d/ssh restart
-/etc/init.d/dropbear restart
 /etc/init.d/squid3 restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
@@ -188,7 +177,6 @@ echo ""  | tee -a log-install.txt
 echo "Service"  | tee -a log-install.txt
 echo "-------"  | tee -a log-install.txt
 echo "OpenSSH  : 22, 444"  | tee -a log-install.txt
-echo "Dropbear : 143, 3128"  | tee -a log-install.txt
 echo "Squid3   : 3121 (limit to IP SSH)"  | tee -a log-install.txt
 echo "OpenVPN  : TCP 1194 (client config : http://$MYIP:81/client.ovpn)"  | tee -a log-install.txt
 echo "nginx    : 81"  | tee -a log-install.txt
@@ -200,7 +188,7 @@ echo "usernew (Membuat Akun SSH)"  | tee -a log-install.txt
 echo "trial (Membuat Akun Trial)"  | tee -a log-install.txt
 echo "hapus (Menghapus Akun SSH)"  | tee -a log-install.txt
 echo "member (Cek Member SSH)"  | tee -a log-install.txt
-echo "resvis (Restart Service dropbear, squid3, openvpn dan ssh)"  | tee -a log-install.txt
+echo "resvis (Restart Service squid3, openvpn dan ssh)"  | tee -a log-install.txt
 echo "reboot (Reboot VPS)"  | tee -a log-install.txt
 echo "speedtest (Speedtest VPS)"  | tee -a log-install.txt
 echo "info (Menampilkan Informasi Sistem)"  | tee -a log-install.txt
