@@ -31,10 +31,6 @@ email=ajurna.net
 # go to root
 cd
 
-# disable ipv6
-echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
-
 # merampingkan
 apt-get purge apache* samba* bind9* sasl* sendmail* exim* nscd* ntp
 apt-get clean
@@ -111,22 +107,6 @@ cd /etc/openvpn/
 wget -O /etc/openvpn/client.ovpn "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/clientdeb9.conf"
 sed -i $MYIP2 /etc/openvpn/client.ovpn;
 cp client.ovpn /home/vps/public_html/
-
-
-
-# setting port ssh
-cd
-sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 444' /etc/ssh/sshd_config
-/etc/init.d/ssh restart
-
-# install squid3
-cd
-apt-get -y install squid3
-wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/squid3.conf"
-sed -i $MYIP2 /etc/squid3/squid.conf;
-/etc/init.d/squid3 restart
-
 
 # teks berwarna
 apt-get -y install ruby
