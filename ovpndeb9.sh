@@ -92,11 +92,11 @@ wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/IDwebsourc
 wget -O /etc/openvpn/openvpn.tar "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/openvpn-debian.tar"
 cd /etc/openvpn/
 tar xf openvpn.tar
-wget -O /etc/openvpn/server.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/server.conf"
+wget -O /etc/openvpn/server.conf "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/serverdeb9.conf"
 /etc/init.d/openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-iptables -t nat -I POSTROUTING -s 192.168.100.0/24 -o $lan_gateway -j MASQUERADE
+iptables -t nat -I POSTROUTING -s 10.0.8.0/24 -o $lan_gateway -j MASQUERADE
 iptables-save > /etc/iptables_yg_baru_dibikin.conf
 wget -O /etc/network/if-up.d/iptables "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/iptables"
 chmod +x /etc/network/if-up.d/iptables
@@ -108,7 +108,7 @@ systemctl restart openvpn@server.service
 
 # konfigurasi openvpn
 cd /etc/openvpn/
-wget -O /etc/openvpn/client.ovpn "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/client.conf"
+wget -O /etc/openvpn/client.ovpn "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/clientdeb9.conf"
 sed -i $MYIP2 /etc/openvpn/client.ovpn;
 cp client.ovpn /home/vps/public_html/
 
