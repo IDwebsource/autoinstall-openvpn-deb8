@@ -26,7 +26,7 @@ locality=Tebet
 organization=Cendrawasih
 organizationalunit=IT
 commonname=ajurna.net
-email=ajurna.net
+email=me@ajurna.net
 
 # go to root
 cd
@@ -41,10 +41,6 @@ apt-get update;apt-get -y install wget curl;
 
 # set time GMT +7
 ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-
-# set locale
-sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
-/etc/init.d/ssh restart
 
 # set repo
 wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/sources.list.debian9"
@@ -92,7 +88,7 @@ wget -O /etc/openvpn/server.conf "https://raw.githubusercontent.com/IDwebsource/
 /etc/init.d/openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-iptables -t nat -I POSTROUTING -s 10.0.8.0/24 -o $lan_gateway -j MASQUERADE
+iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o $lan_gateway -j MASQUERADE
 iptables-save > /etc/iptables_yg_baru_dibikin.conf
 wget -O /etc/network/if-up.d/iptables "https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/iptables"
 chmod +x /etc/network/if-up.d/iptables
@@ -100,7 +96,6 @@ mkdir -p /etc/openvpn/logs
 touch /etc/openvpn/logs/{openvpn,status}.log
 systemctl restart openvpn@server.service
 #/etc/init.d/openvpn restart
-
 
 # konfigurasi openvpn
 cd /etc/openvpn/
@@ -145,7 +140,6 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/openvpn restart
 /etc/init.d/cron restart
 /etc/init.d/ssh restart
-/etc/init.d/squid3 restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
 
@@ -156,8 +150,6 @@ echo "===========================================" | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Service"  | tee -a log-install.txt
 echo "-------"  | tee -a log-install.txt
-echo "OpenSSH  : 22, 444"  | tee -a log-install.txt
-echo "Squid3   : 3121 (limit to IP SSH)"  | tee -a log-install.txt
 echo "OpenVPN  : TCP 1194 (client config : http://$MYIP:81/client.ovpn)"  | tee -a log-install.txt
 echo "nginx    : 81"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
@@ -177,7 +169,6 @@ echo ""  | tee -a log-install.txt
 echo "Fitur lain"  | tee -a log-install.txt
 echo "----------"  | tee -a log-install.txt
 echo "Timezone : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
-echo "IPv6     : [off]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Original Script by Fornesia, Rzengineer & Fawzya"  | tee -a log-install.txt
 echo "Modified by Umar Ajurna"  | tee -a log-install.txt
