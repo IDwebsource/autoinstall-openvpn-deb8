@@ -30,3 +30,10 @@ Install OpenVPN and Squid3
 4. Done
    <br/>Status Server is UP, "info" for command 
     <br/><a href="https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb8.png" rel="nofollow"><img src="https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb8.png" alt=""></a>
+    
+Install OpenVPN (Update Debian 9) 
+--------------------------
+1. wget https://raw.githubusercontent.com/IDwebsource/autoinstall-openvpn-deb8/master/ovpndeb9.sh
+2. chmod +x ovpndeb9.sh
+3. ./ovpndeb9.sh
+4. Done
