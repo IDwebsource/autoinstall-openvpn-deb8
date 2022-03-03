@@ -14,8 +14,7 @@ echo -e "====Informasi SSH Account====" | lolcat
 echo -e "Host: $IP"
 echo -e "Username: $Login "
 echo -e "Password: $Pass" 
-echo -e "Port Dropbear: 143,3128"
-echo -e "Port Squid: 3121"
+echo -e "Port Squid: 3121 (debian 9 squid not installed)"
 echo -e "Config OpenVPN (UDP 1194): http://$IP:81/client.ovpn"
 echo -e "-----------------------------" | lolcat
 echo -e "Aktif Sampai: $exp"
